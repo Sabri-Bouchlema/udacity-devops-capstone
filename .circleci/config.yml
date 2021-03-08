@@ -42,8 +42,10 @@ jobs:
         - docker/check
         - docker/build:
             image: sabribouchlema/capstone-frontend
+            path: frontend
         - docker/push:
             image: sabribouchlema/capstone-frontend
+            path: frontend
 workflows:
   default:
     jobs:
