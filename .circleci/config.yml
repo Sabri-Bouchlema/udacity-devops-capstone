@@ -1,0 +1,39 @@
+version: 2.1
+  
+jobs:
+  install-frontend-dependencies:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [frontend-dependencies]
+      - run:
+          name: Front-end dependencies install
+          command: |
+            cd frontend
+            npm i
+      - save_cache:
+          paths: [frontend/node_modules]
+          key: frontend-dependencies
+
+  lint-frontend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [frontend-dependencies]
+      - run:
+          name: Front-end lint
+          command: |
+             cd frontend
+             npm i
+             npm run lint
+
+workflows:
+  default:
+    jobs:
+      - install-frontend-dependencies
+      - test-frontend:
+          requires: [install-frontend-dependencies]
