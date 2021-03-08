@@ -37,3 +37,8 @@ workflows:
       - install-frontend-dependencies
       - test-frontend:
           requires: [install-frontend-dependencies]
+      - build-and-publish-docker-image:
+          jobs:
+            - docker/publish:
+                image: sabribouchlema/capstone-frontend
+                path: frontend
