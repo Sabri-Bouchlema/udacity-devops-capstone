@@ -56,4 +56,4 @@ workflows:
       - lint-frontend:
           requires: [install-frontend-dependencies]
       - build-and-push-docker-image:
-          requires: [build-and-push]
+          requires: [lint-frontend]
