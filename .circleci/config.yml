@@ -46,6 +46,8 @@ jobs:
             tag: latest
         - docker/push:
             image: sabribouchlema/capstone-frontend
+            tag: latest
+
 
 workflows:
   default:
