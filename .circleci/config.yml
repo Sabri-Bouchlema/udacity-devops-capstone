@@ -38,7 +38,7 @@ workflows:
   default:
     jobs:
       - install-frontend-dependencies
-      - test-frontend:
+      - lint-frontend:
           requires: [install-frontend-dependencies]
       - build-and-publish-docker-image:
           jobs:
