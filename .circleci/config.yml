@@ -34,15 +34,20 @@ jobs:
              npm i
              npm run lint
 
-  build-and-publish-docker-image:
-    jobs:
-      - docker/publish:
-        image: sabribouchlema/capstone-frontend
-        path: frontend
+  build-and-push:
+      executor: docker/docker
+      steps:
+        - setup_remote_docker
+        - checkout
+        - docker/check
+        - docker/build:
+            image: sabribouchlema/capstone-frontend
+        - docker/push:
+            image: sabribouchlema/capstone-frontend
 workflows:
   default:
     jobs:
       - install-frontend-dependencies
       - lint-frontend:
           requires: [install-frontend-dependencies]
-      - build-and-publish-docker-image
+      - build-and-push
