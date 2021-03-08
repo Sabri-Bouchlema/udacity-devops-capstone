@@ -34,19 +34,19 @@ jobs:
              npm i
              npm run lint
 
-  build-and-push:
-      executor: docker/docker
-      steps:
-        - setup_remote_docker
-        - checkout
-        - docker/check
-        - docker/build:
-            image: sabribouchlema/capstone-frontend
-            path: frontend
-            tag: latest
-        - docker/push:
-            image: sabribouchlema/capstone-frontend
-            tag: latest
+  build-and-push-docker-image:
+    executor: docker/docker
+    steps:
+      - setup_remote_docker
+      - checkout
+      - docker/check
+      - docker/build:
+          image: sabribouchlema/capstone-frontend
+          path: frontend
+          tag: latest
+      - docker/push:
+          image: sabribouchlema/capstone-frontend
+          tag: latest
 
 
 workflows:
@@ -55,4 +55,5 @@ workflows:
       - install-frontend-dependencies
       - lint-frontend:
           requires: [install-frontend-dependencies]
-      - build-and-push
+      - build-and-push-docker-image:
+          requires: [build-and-push]
