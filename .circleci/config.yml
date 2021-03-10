@@ -42,7 +42,6 @@ jobs:
       - docker/check
       - docker/build:
           image: sabribouchlema/capstone-frontend
-          path: frontend
           tag: latest
       - docker/push:
           image: sabribouchlema/capstone-frontend
