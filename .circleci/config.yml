@@ -58,7 +58,9 @@ jobs:
           name: Build application Docker image
           command: |
             cd frontend
-            docker build -t sabribouchlema/capstone-frontend:latest .  
+            docker build -t sabribouchlema/capstone-frontend:latest .
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            docker push sabribouchlema/capstone-frontend:latest
 
 workflows:
   default:
