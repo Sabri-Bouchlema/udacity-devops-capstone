@@ -48,6 +48,26 @@ jobs:
           image: sabribouchlema/capstone-frontend
           tag: latest
 
+  build:
+    docker:
+      - image: circleci/golang:1.15
+        auth:
+          username: sabribouchlema
+          password: $DOCKER_PASSWORD 
+    steps:
+      - checkout
+      # ... steps for building/testing app ...
+
+      - setup_remote_docker:
+          version: 19.03.13
+          docker_layer_caching: true
+
+      # build and push Docker image
+      - run: |
+          cd frontend
+          docker build -t sabribouchlema/capstone-frontend:latest .
+          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+          docker push sabribouchlema/capstone-frontend:latest
 
 workflows:
   default:
@@ -55,5 +75,5 @@ workflows:
       - install-frontend-dependencies
       - lint-frontend:
           requires: [install-frontend-dependencies]
-      - build-and-push-docker-image:
+      - build:
           requires: [lint-frontend]
