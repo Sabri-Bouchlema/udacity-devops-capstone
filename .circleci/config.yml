@@ -34,46 +34,38 @@ jobs:
              npm i
              npm run lint
 
-  build-and-push-docker-image:
-    executor: docker/docker
-    steps:
-      - setup_remote_docker
-      - checkout
-      - docker/check
-      - docker/build:
-          image: sabribouchlema/capstone-frontend
-          path: frontend
-          tag: latest
-      - docker/push:
-          image: sabribouchlema/capstone-frontend
-          tag: latest
+  # build-and-push-docker-image:
+  #   executor: docker/docker
+  #   steps:
+  #     - setup_remote_docker
+  #     - checkout
+  #     - docker/check
+  #     - docker/build:
+  #         image: sabribouchlema/capstone-frontend
+  #         path: frontend
+  #         tag: latest
+  #     - docker/push:
+  #         image: sabribouchlema/capstone-frontend
+  #         tag: latest
 
   build:
     docker:
-      - image: circleci/golang:1.15
-        auth:
-          username: sabribouchlema
-          password: $DOCKER_PASSWORD 
+      - image: docker:17.05.0-ce-git
     steps:
       - checkout
-      # ... steps for building/testing app ...
-
-      - setup_remote_docker:
-          version: 19.03.13
-          docker_layer_caching: true
-
-      # build and push Docker image
-      - run: |
-          cd frontend
-          docker build -t sabribouchlema/capstone-frontend:latest .
-          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-          docker push sabribouchlema/capstone-frontend:latest
+      - setup_remote_docker
+      - run:
+          name: Build application Docker image
+          command: |
+            cd frontend
+            docker build -t sabribouchlema/capstone-frontend:latest .  
 
 workflows:
   default:
     jobs:
-      - install-frontend-dependencies
-      - lint-frontend:
-          requires: [install-frontend-dependencies]
-      - build:
-          requires: [lint-frontend]
+      # - install-frontend-dependencies
+      # - lint-frontend:
+      #     requires: [install-frontend-dependencies]
+      # - build-and-push-docker-image:
+      #     requires: [lint-frontend]
+      - build
