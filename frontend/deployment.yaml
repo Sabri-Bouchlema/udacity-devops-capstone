@@ -15,9 +15,9 @@ spec:
       containers:
       - name: capstone-frontend
         image: sabribouchlema/capstone-frontend
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
-      imagePullPolicy: Always
   strategy:
     type: RollingUpdate
     rollingUpdate:
