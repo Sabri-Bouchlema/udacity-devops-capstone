@@ -44,9 +44,9 @@ jobs:
           name: Build application Docker image
           command: |
             cd frontend
-            docker build -t sabribouchlema/capstone-frontend:latest .
+            docker build -t sabribouchlema/capstone-frontend:${CIRCLE_BUILD_NUM} .
             docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-            docker push sabribouchlema/capstone-frontend:latest
+            docker push sabribouchlema/capstone-frontend:${CIRCLE_BUILD_NUM}
 
 
   deploy:
@@ -75,9 +75,16 @@ jobs:
           command: |
             aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name $CLUSTER_NAME
       - run:
+          name: Prepare K8S template
+          command: |
+            for f in .k8s/templates/deployment.yaml
+              do
+              envsubst < $f > ".k8s/.generated/$(basename $f)"
+            done
+      - run:
           name: Deploy
           command: |
-            kubectl apply -f frontend/deployment.yaml
+            kubectl apply -f frontend/.k8s/.generated/
             kubectl get pod
 
 workflows:
