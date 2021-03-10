@@ -83,10 +83,10 @@ jobs:
 workflows:
   default:
     jobs:
-      # - install-frontend-dependencies
-      # - lint-frontend:
-      #     requires: [install-frontend-dependencies]
-      # - build-and-push-docker-image:
-      #     requires: [lint-frontend]
-      - deploy
-          # requires: [build-and-push-docker-image]
+      - install-frontend-dependencies
+      - lint-frontend:
+          requires: [install-frontend-dependencies]
+      - build-and-push-docker-image:
+          requires: [lint-frontend]
+      - deploy:
+          requires: [build-and-push-docker-image]
