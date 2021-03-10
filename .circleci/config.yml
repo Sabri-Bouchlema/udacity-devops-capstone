@@ -77,9 +77,9 @@ jobs:
       - run:
           name: Prepare K8S template
           command: |
-            for f in .k8s/templates/deployment.yaml
+            for f in frontend/.k8s/templates/deployment.yaml
               do
-              envsubst < $f > ".k8s/.generated/$(basename $f)"
+              envsubst < $f > "frontend/.k8s/.generated/$(basename $f)"
             done
       - run:
           name: Deploy
